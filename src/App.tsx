@@ -108,9 +108,9 @@ function App() {
                 transition={{ duration: 0.5 }}
                 className="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center"
               >
-                <span className="text-white font-bold">PNC</span>
+                <span className="text-white font-bold">C</span>
               </motion.div>
-              <span className="text-2xl font-bold text-blue-900">Paul Newark Consulting</span>
+              <span className="text-2xl font-bold text-blue-900">Cento Consulting</span>
             </div>
             
             <div className="flex items-center sm:hidden">
@@ -174,7 +174,7 @@ function App() {
           className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
         >
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            Paul Newark Consulting
+            Cento Consulting Ltd
           </h1>
           <p className="text-xl md:text-2xl text-blue-100 mb-8">
             Strategic Business Solutions for Sustainable Growth
@@ -345,9 +345,11 @@ function App() {
               </div>
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <p className="text-gray-600">
-                  85 Lansdowne Drive<br />
-                  Hailsham, East Sussex<br />
-                  BN27 1LP
+                  Cento Consulting Ltd, <br />
+                  110 Aylesbury Avenue, <br />
+                  Eastbourne, <br />
+                  East Sussex, <br />
+                  BN23 6EL <br />
                 </p>
               </div>
             </div>
@@ -383,7 +385,7 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <p className="text-sm">
-              © {new Date().getFullYear()} Paul Newark Consulting. All rights reserved.
+              © {new Date().getFullYear()} Cento Consulting Ltd. All rights reserved.
             </p>
           </div>
         </div>
