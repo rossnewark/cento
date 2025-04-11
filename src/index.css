@@ -158,3 +158,53 @@ html {
   content-visibility: auto;
   contain-intrinsic-size: 0 500px;
 }
+
+/* Add these CSS classes to your index.css file */
+
+/* Create a 3D space for the card flip effect */
+.perspective-500 {
+  perspective: 500px;
+}
+
+/* Apply backface visibility to create the flip effect */
+.card-container {
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+/* Rotate Y transforms for the card sides */
+.rotate-y-0 {
+  transform: rotateY(0deg);
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Make sure backface is hidden */
+.card-container > div {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* For browsers that might not support preserve-3d well, fallback to opacity transition */
+@media (prefers-reduced-motion: reduce) {
+  .card-container {
+    transform-style: flat;
+  }
+  
+  .rotate-y-0, .rotate-y-180 {
+    transform: none;
+  }
+}
+
+/* Add hover effect */
+.card-container:hover {
+  transform: translateY(-5px);
+  transition: transform 0.5s ease;
+}
+
+/* Add custom easing for smoother flip animation */
+.card-container > div {
+  transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+}
