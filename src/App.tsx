@@ -1,4 +1,3 @@
-import React, { useRef } from 'react';
 import {
   Navbar,
   Footer,
@@ -11,12 +10,6 @@ import {
 import { useScrollSpy } from './hooks';
 
 function App() {
-  // Refs for sections to be used with IntersectionObserver
-  const homeRef = useRef<HTMLElement>(null);
-  const servicesRef = useRef<HTMLElement>(null);
-  const aboutRef = useRef<HTMLElement>(null);
-  const contactRef = useRef<HTMLElement>(null);
-
   // Company information
   const company = {
     name: 'Cento Consulting Ltd',
@@ -35,8 +28,12 @@ function App() {
     )
   };
 
-  // Use the custom scroll spy hook to track active section
-  const { activeSection } = useScrollSpy(['home', 'services', 'about', 'contact']);
+  // Use optimized scroll spy hook with section IDs directly
+  const { activeSection } = useScrollSpy(['home', 'services', 'about', 'contact'], {
+    rootMargin: "-100px 0px",
+    threshold: 0.3,
+    debounceTime: 100
+  });
 
   // Images
   const heroBackground = 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80';
@@ -55,21 +52,19 @@ function App() {
         companyName={company.name}
         tagline={company.tagline}
         backgroundImage={heroBackground}
-        sectionRef={homeRef}
       />
 
       {/* Services Section */}
-      <ServicesSection sectionRef={servicesRef} />
+      <ServicesSection />
 
       {/* About Section */}
-      <AboutSection sectionRef={aboutRef} />
+      <AboutSection />
 
       {/* Case Studies Section */}
       <CaseStudiesSection />
 
       {/* Contact Section */}
       <ContactSection 
-        sectionRef={contactRef}
         companyInfo={{
           phone: company.phone,
           email: company.email,

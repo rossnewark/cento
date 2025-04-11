@@ -1,32 +1,88 @@
-import { useState, useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
-import { navObserverOptions } from '../utils/animation';
+import { useState, useEffect, useRef } from 'react';
 
-export function useScrollSpy(sections: string[]) {
-  const [activeSection, setActiveSection] = useState<string>(sections[0]);
+interface ScrollSpyOptions {
+  rootMargin?: string;
+  threshold?: number | number[];
+  debounceTime?: number;
+}
+
+export function useScrollSpy(
+  sectionIds: string[], 
+  options: ScrollSpyOptions = {}
+) {
+  const [activeSection, setActiveSection] = useState<string>(sectionIds[0]);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const visibleSections = useRef<Set<string>>(new Set());
+  const debounceTimeout = useRef<number | null>(null); // Changed from NodeJS.Timeout
   
-  // Create InView refs for each section
-  const sectionRefs = sections.map(section => {
-    const [ref, inView] = useInView(navObserverOptions);
-    return { section, ref, inView };
-  });
-  
-  // Debounced update of active section
+  const {
+    rootMargin = "-100px 0px",
+    threshold = 0.3,
+    debounceTime = 100
+  } = options;
+
   useEffect(() => {
-    const visibleSections = sectionRefs.filter(item => item.inView);
-    
-    // Debounce logic to avoid multiple state updates
-    if (visibleSections.length > 0) {
-      const timeoutId = setTimeout(() => {
-        // Find the first visible section (closest to top)
-        setActiveSection(visibleSections[0].section);
-      }, 100);
-      
-      return () => clearTimeout(timeoutId);
+    // Clean up previous observer
+    if (observerRef.current) {
+      observerRef.current.disconnect();
     }
-  }, [sectionRefs.map(item => item.inView)]);
+    
+    visibleSections.current.clear();
+    
+    // Create a single observer for all sections
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        // Process all entries
+        entries.forEach(entry => {
+          const id = entry.target.id;
+          
+          if (entry.isIntersecting) {
+            visibleSections.current.add(id);
+          } else {
+            visibleSections.current.delete(id);
+          }
+        });
+        
+        // Debounce the state update
+        if (debounceTimeout.current) {
+          clearTimeout(debounceTimeout.current);
+        }
+        
+        debounceTimeout.current = window.setTimeout(() => {
+          if (visibleSections.current.size > 0) {
+            // Find the first visible section based on DOM order
+            const sortedVisible = Array.from(visibleSections.current)
+              .filter(id => sectionIds.includes(id))
+              .sort((a, b) => sectionIds.indexOf(a) - sectionIds.indexOf(b));
+              
+            if (sortedVisible.length > 0) {
+              setActiveSection(sortedVisible[0]);
+            }
+          }
+        }, debounceTime);
+      },
+      { rootMargin, threshold }
+    );
+    
+    // Observe all sections
+    sectionIds.forEach(id => {
+      const element = document.getElementById(id);
+      if (element) {
+        observerRef.current?.observe(element);
+      }
+    });
+    
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current);
+      }
+    };
+  }, [sectionIds, rootMargin, threshold, debounceTime]);
   
-  return { activeSection, sectionRefs };
+  return { activeSection };
 }
 
 export default useScrollSpy;

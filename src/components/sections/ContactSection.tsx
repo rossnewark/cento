@@ -6,7 +6,7 @@ import ContactInfo from '../ui/ContactInfo';
 import { normalTransition, standardObserverOptions } from '../../utils/animation';
 
 interface ContactSectionProps {
-  sectionRef: React.RefObject<HTMLElement>;
+  sectionRef?: React.RefObject<HTMLElement>;
   companyInfo: {
     phone: string;
     email: string;

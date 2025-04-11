@@ -4,11 +4,11 @@ import { ArrowRight } from 'lucide-react';
 import { slowTransition } from '../../utils/animation';
 
 interface HeroSectionProps {
-  companyName: string;
-  tagline: string;
-  backgroundImage: string;
-  sectionRef: React.RefObject<HTMLElement>;
-}
+    companyName: string;
+    tagline: string;
+    backgroundImage: string;
+    sectionRef?: React.RefObject<HTMLElement>;
+  }
 
 const HeroSection: React.FC<HeroSectionProps> = ({
   companyName,

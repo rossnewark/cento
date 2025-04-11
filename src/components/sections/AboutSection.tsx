@@ -6,7 +6,7 @@ import SwiperGallery from '../ui/SwiperGallery';
 import { normalTransition, standardObserverOptions } from '../../utils/animation';
 
 interface AboutSectionProps {
-  sectionRef: React.RefObject<HTMLElement>;
+  sectionRef?: React.RefObject<HTMLElement>;
 }
 
 const AboutSection: React.FC<AboutSectionProps> = ({ sectionRef }) => {

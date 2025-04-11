@@ -5,9 +5,105 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cento Consulting Ltd - Strategic Business Solutions</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/src/main.tsx" as="script" type="module" />
+    <link rel="preload" href="/src/index.css" as="style" />
+    
+    <!-- Preload hero image -->
+    <link rel="preload" 
+          href="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80" 
+          as="image" />
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    
+    <!-- Critical CSS inline block for above-the-fold content -->
+    <style>
+      /* Inline critical CSS for faster initial render */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+                     Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        overflow-x: hidden;
+      }
+      
+      html {
+        scroll-behavior: smooth;
+        /* Add passive scroll behavior and prevent layout shifts */
+        height: 100%;
+      }
+      
+      /* Disable smooth scrolling for users who prefer reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
+      
+      /* Add loading state for body to prevent FOUC */
+      body.loading {
+        visibility: hidden;
+      }
+      
+      /* Basic styles for loading indicator */
+      #loading-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
+        z-index: 9999;
+      }
+      
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-left-color: #1e3a8a;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
   </head>
-  <body>
+  <body class="loading">
+    <!-- Loading indicator -->
+    <div id="loading-indicator">
+      <div class="spinner"></div>
+    </div>
+    
     <div id="root"></div>
+    
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Remove loading class once everything is ready -->
+    <script>
+      // Remove loading state when page is loaded
+      window.addEventListener('load', function() {
+        // Give a small delay to ensure React has initialized
+        setTimeout(function() {
+          document.body.classList.remove('loading');
+          const loadingIndicator = document.getElementById('loading-indicator');
+          if (loadingIndicator) {
+            loadingIndicator.style.opacity = '0';
+            loadingIndicator.style.transition = 'opacity 0.3s';
+            setTimeout(function() {
+              loadingIndicator.remove();
+            }, 300);
+          }
+        }, 100);
+      });
+    </script>
+    
   </body>
 </html>
