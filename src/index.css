@@ -2,11 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Backface visibility for card flipping */
 .backface-hidden {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
 
+/* GPU acceleration for better performance */
+.gpu-accelerated {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Swiper customization */
 .swiper-button-next,
 .swiper-button-prev {
   color: #1e3a8a !important;
@@ -14,4 +30,18 @@
 
 .swiper-pagination-bullet-active {
   background: #1e3a8a !important;
+}
+
+/* Lazy loading enhancements */
+.swiper-lazy-preloader {
+  --swiper-preloader-color: #1e3a8a;
+}
+
+/* Reduce animation complexity on mobile */
+@media (max-width: 640px) {
+  .reduce-motion {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
 }
